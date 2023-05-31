@@ -30,7 +30,11 @@ export default function Home({ products }: HomeProps) {
   return (
     <HomeContainer ref={sliderRef} className='keen-slider'>
       {products.map((product) => (
-        <Product key={product.id} className='keen-slider__slide'>
+        <Product
+          href={`/product/${product.id}`}
+          key={product.id}
+          className='keen-slider__slide'
+        >
           <Image
             priority={false}
             src={product.imageUrl}
@@ -72,6 +76,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       products,
     },
-    revalidate: 60 * 60 * 2 // 2 horas
+    revalidate: 60 * 60 * 2, // 2 horas
   };
 };
