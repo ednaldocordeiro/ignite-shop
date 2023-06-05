@@ -11,14 +11,17 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Stripe from 'stripe';
+import { useShoppingCart } from 'use-shopping-cart';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
   price: string;
   description: string;
   defaultPriceId: string;
+  unit_amount: number;
+  currency: string;
 }
 interface ProductProps {
   product: Product;
@@ -28,24 +31,36 @@ export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter();
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
+  const {addItem} = useShoppingCart()
+
   if (isFallback) return <p>Loading...</p>;
 
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      });
-
-      const {checkoutUrl} = response.data;
-
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      console.log(error);
-      alert('Falha ao redirecionar ao checkout');
-      setIsCreatingCheckoutSession(false);
+  async function handleAddToCart() {
+    const productInfo = {
+      id: product.id,
+      name: product.name,
+      price: product.unit_amount,
+      priceId: product.defaultPriceId,
+      currency: product.currency.toUpperCase(),
+      sku: '',
     }
+
+    addItem(productInfo);
+
+    // try {
+    //   setIsCreatingCheckoutSession(true)
+    //   const response = await axios.post('/api/checkout', {
+    //     priceId: product.defaultPriceId
+    //   });
+    //   const {checkoutUrl} = response.data;
+
+    //   window.location.href = checkoutUrl;
+    // } catch (error) {
+    //   console.log(error);
+    //   alert('Falha ao redirecionar ao checkout');
+    //   setIsCreatingCheckoutSession(false);
+    // }
   }
 
   return (
@@ -63,7 +78,7 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>Comprar agora</button>
+          <button disabled={isCreatingCheckoutSession} onClick={handleAddToCart}>Adicionar no carrinho</button>
         </ProductDetails>
       </ProductContainer>
     </>
@@ -107,6 +122,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         }).format(price.unit_amount! / 100),
         description: product.description,
         defaultPriceId: price.id,
+        unit_amount: price.unit_amount,
+        currency: price.currency,
       },
     },
     revalidate: 60 * 60 * 1, //1 hora

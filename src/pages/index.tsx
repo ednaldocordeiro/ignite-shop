@@ -9,6 +9,7 @@ import { stripe } from '@/lib/stripe';
 import Stripe from 'stripe';
 
 import 'keen-slider/keen-slider.min.css';
+import { useShoppingCart } from 'use-shopping-cart';
 interface Products {
   id: string;
   name: string;
