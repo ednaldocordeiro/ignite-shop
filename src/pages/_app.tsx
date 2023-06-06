@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Container, Header } from '@/styles/pages/app'
 
 import { CartProvider } from 'use-shopping-cart'
+import { CartModal } from '@/components/CartModal'
 
 const roboto = Roboto_Flex({ subsets: ['latin'] })
 
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <Container className={`${roboto.className}`}>
       <Header>
         <Image src={logo} alt="" />
+        <CartModal className={`${roboto.className}`} />
       </Header>
       <CartProvider
         cartMode='checkout-session'
