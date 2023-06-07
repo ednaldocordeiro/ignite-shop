@@ -44,6 +44,7 @@ export default function Product({ product }: ProductProps) {
       priceId: product.defaultPriceId,
       currency: product.currency.toUpperCase(),
       sku: '',
+      image: product.imageUrl,
     }
 
     addItem(productInfo);

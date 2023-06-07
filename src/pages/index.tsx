@@ -29,6 +29,8 @@ export default function Home({ products }: HomeProps) {
     },
   });
 
+  const {} = useShoppingCart()
+
   return (
     <>
       <Head>

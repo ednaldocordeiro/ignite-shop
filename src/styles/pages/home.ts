@@ -10,7 +10,7 @@ export const HomeContainer = styled('main', {
 })
 
 export const Product = styled(Link, {
-  background: 'linear-gradient(180deg, #1ea483 0%, #7465d6 100%)',
+  background: '$gray800',
   borderRadius: 8,
   cursor: 'pointer',
   position: 'relative',
@@ -56,6 +56,8 @@ export const Product = styled(Link, {
   },
 
   '&:hover': {
+    background: '$green500',
+
     footer: {
       transform: 'translateY(0%)',
       opacity: 1,
