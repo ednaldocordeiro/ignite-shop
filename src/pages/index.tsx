@@ -1,4 +1,4 @@
-import { HomeContainer, Product } from '@/styles/pages/home';
+import { CartButton, HomeContainer, Product } from '@/styles/pages/home';
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -10,15 +10,20 @@ import Stripe from 'stripe';
 
 import 'keen-slider/keen-slider.min.css';
 import { useShoppingCart } from 'use-shopping-cart';
-interface Products {
+import { BagSimple, ShoppingCart } from '@phosphor-icons/react';
+interface Product {
   id: string;
   name: string;
   imageUrl: string;
   price: number;
+  description: string;
+  defaultPriceId: string;
+  unit_amount: number;
+  currency: string;
 }
 
 interface HomeProps {
-  products: Products[];
+  products: Product[];
 }
 
 export default function Home({ products }: HomeProps) {
@@ -29,7 +34,21 @@ export default function Home({ products }: HomeProps) {
     },
   });
 
-  const {} = useShoppingCart()
+  const {addItem} = useShoppingCart()
+
+  function handleAddProductToCart(product: Product) {
+    const productInfo = {
+      id: product.id,
+      name: product.name,
+      price: product.unit_amount,
+      priceId: product.defaultPriceId,
+      currency: product.currency.toUpperCase(),
+      sku: '',
+      image: product.imageUrl,
+    }
+
+    addItem(productInfo);
+  }
 
   return (
     <>
@@ -53,8 +72,13 @@ export default function Home({ products }: HomeProps) {
             />
 
             <footer>
-              <strong>{product.name}</strong>
-              <span>{product.price}</span>
+              <div>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
+              </div>
+              <CartButton onClick={() => handleAddProductToCart(product)}>
+                <BagSimple size={28} color='white' />
+              </CartButton>
             </footer>
           </Product>
         ))}
@@ -79,6 +103,10 @@ export const getStaticProps: GetStaticProps = async () => {
         style: 'currency',
         currency: 'BRL',
       }).format(price.unit_amount! / 100),
+      description: product.description,
+      defaultPriceId: price.id,
+      unit_amount: price.unit_amount,
+      currency: price.currency,
     };
   });
 

@@ -9,6 +9,7 @@ import { Container, Header } from '@/styles/pages/app'
 
 import { CartProvider } from 'use-shopping-cart'
 import { CartModal } from '@/components/CartModal'
+import Link from 'next/link'
 
 const roboto = Roboto_Flex({ subsets: ['latin'] })
 
@@ -24,7 +25,9 @@ export default function App({ Component, pageProps }: AppProps) {
     >
       <Container className={`${roboto.className}`}>
         <Header>
-          <Image src={logo} alt="" />
+          <Link href='/'>
+            <Image src={logo} alt="" />
+          </Link>
           <CartModal className={`${roboto.className}`} />
         </Header>
           <Component {...pageProps} />
