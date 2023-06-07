@@ -48,20 +48,6 @@ export default function Product({ product }: ProductProps) {
     }
 
     addItem(productInfo);
-
-    // try {
-    //   setIsCreatingCheckoutSession(true)
-    //   const response = await axios.post('/api/checkout', {
-    //     priceId: product.defaultPriceId
-    //   });
-    //   const {checkoutUrl} = response.data;
-
-    //   window.location.href = checkoutUrl;
-    // } catch (error) {
-    //   console.log(error);
-    //   alert('Falha ao redirecionar ao checkout');
-    //   setIsCreatingCheckoutSession(false);
-    // }
   }
 
   return (

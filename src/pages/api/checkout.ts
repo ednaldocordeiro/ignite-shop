@@ -2,13 +2,13 @@ import { stripe } from "@/lib/stripe";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const {priceId} = req.body;
+  const {prices} = req.body;
 
   if (req.method !== 'POST') {
     return res.status(405).json({error: 'Method not allowed.'})
   }
 
-  if (!priceId) {
+  if (!prices || prices.length <= 0) {
     return res.status(400).json({error: 'Price not found.'})
   }
 
@@ -17,12 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: 'payment', // apenas pagamento
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      }
-    ],
+    line_items: prices,
     success_url,
     cancel_url,
   })

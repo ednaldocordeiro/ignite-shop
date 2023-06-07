@@ -15,11 +15,15 @@ import Image from 'next/image';
 
 import { useShoppingCart, formatCurrencyString } from 'use-shopping-cart';
 import { EmptyCart } from '../EmptyCart';
+import axios from 'axios';
+import { useState } from 'react';
 
 interface CartModal extends Dialog.DialogContentProps {}
 
 export function CartModal({ className }: CartModal) {
   const { cartDetails, removeItem } = useShoppingCart();
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false);
 
   const cart = cartDetails ? Object.values(cartDetails) : [];
   const totalPrice = cart.reduce((price, product) => {
@@ -29,6 +33,27 @@ export function CartModal({ className }: CartModal) {
     value: totalPrice,
     currency: 'BRL',
   });
+
+  async function handleCheckout() {
+    const prices = cart.map((product) => ({
+      price: product.priceId,
+      quantity: product.quantity,
+    }));
+
+    try {
+      setIsCreatingCheckoutSession(true);
+      const response = await axios.post('/api/checkout', {
+        prices,
+      });
+      const { checkoutUrl } = response.data;
+
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.log(error);
+      alert('Falha ao redirecionar ao checkout');
+      setIsCreatingCheckoutSession(false);
+    }
+  }
 
   return (
     <Dialog.Root>
@@ -72,7 +97,12 @@ export function CartModal({ className }: CartModal) {
               <strong>{formattedPrice}</strong>
             </div>
 
-            <button>Finalizar compra</button>
+            <button
+              disabled={isCreatingCheckoutSession}
+              onClick={handleCheckout}
+            >
+              Finalizar compra
+            </button>
           </CartInfo>
         </Content>
       </Dialog.Portal>
