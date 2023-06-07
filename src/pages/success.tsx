@@ -31,7 +31,8 @@ export default function Success({
     if (status === 'complete') {
       clearCart()
     }
-  }, [status, clearCart])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status])
 
   return (
     <>
