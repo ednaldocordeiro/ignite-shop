@@ -4,7 +4,9 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import Stripe from 'stripe';
+import { useShoppingCart } from 'use-shopping-cart';
 
 interface Product {
   name: string;
@@ -15,13 +17,22 @@ interface SuccessProps {
   customerName: string;
   products: { imageUrl: string }[];
   quantity: number;
+  status: 'open' | 'complete' | 'expired';
 }
 
 export default function Success({
   customerName,
   products,
   quantity,
+  status,
 }: SuccessProps) {
+  const {clearCart} = useShoppingCart()
+  useEffect(() => {
+    if (status === 'complete') {
+      clearCart()
+    }
+  }, [status, clearCart])
+
   return (
     <>
       <Head>
@@ -91,6 +102,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       customerName,
       products,
       quantity,
+      status: session.status,
     },
   };
 };
