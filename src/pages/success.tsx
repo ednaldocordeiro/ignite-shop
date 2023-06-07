@@ -1,5 +1,5 @@
 import { stripe } from '@/lib/stripe';
-import { ImageContainer, SuccessContainer } from '@/styles/pages/success';
+import { ImageContainer, Images, SuccessContainer } from '@/styles/pages/success';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -13,10 +13,15 @@ interface Product {
 
 interface SuccessProps {
   customerName: string;
-  product: Product;
+  products: { imageUrl: string }[];
+  quantity: number;
 }
 
-export default function Success({customerName, product}: SuccessProps) {
+export default function Success({
+  customerName,
+  products,
+  quantity,
+}: SuccessProps) {
   return (
     <>
       <Head>
@@ -26,19 +31,22 @@ export default function Success({customerName, product}: SuccessProps) {
       <SuccessContainer>
         <h1>Compra efetuada</h1>
 
-        <ImageContainer>
-          <Image 
-            src={product.imageUrl}
-            alt=''
-            width={120}
-            height={110}
-          />
-        </ImageContainer>
+        <Images>
+          {products.map((product) => (
+            <ImageContainer key={product.imageUrl}>
+              <Image
+                src={product.imageUrl}
+                alt=''
+                width={120}
+                height={110}
+              />
+            </ImageContainer>
+          ))}
+        </Images>
 
         <p>
-          Uhuul <strong>{customerName}</strong>, sua{' '}
-          <strong>{product.name}</strong> já está a caminho da sua
-          casa.
+          Uhuul <strong>{customerName}</strong>, sua compra de{' '}
+          <strong>{quantity}</strong> camisas já está a caminho da sua casa.
         </p>
 
         <Link href='/'>Voltar para o catálogo</Link>
@@ -54,8 +62,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       redirect: {
         destination: '/',
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   const sessionId = String(query.session_id);
@@ -66,15 +74,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   });
 
   const customerName = session.customer_details?.name || '';
-  const product = lineItems.data[0].price?.product as Stripe.Product;
+
+  const products = lineItems.data.map((lineItem) => {
+    const product = lineItem.price?.product as Stripe.Product;
+    return {
+      imageUrl: product.images[0],
+    };
+  });
+
+  const quantity = lineItems.data.reduce((count, lineItem) => {
+    return count + (lineItem.quantity || 0);
+  }, 0);
 
   return {
     props: {
       customerName,
-      product: {
-        name: product.name,
-        imageUrl: product.images[0],
-      },
+      products,
+      quantity,
     },
   };
 };

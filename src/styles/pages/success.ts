@@ -38,12 +38,15 @@ export const SuccessContainer = styled('main', {
   }
 })
 
+export const Images = styled('div', {
+  display: 'flex',
+})
+
 export const ImageContainer = styled('div', {
-  width: '100%',
-  maxWidth: 130,
+  width: 145,
   height: 145,
-  background: '$gray800',
-  borderRadius: 8,
+  background: '$green500',
+  borderRadius: '50%',
   padding: '0.25rem',
   marginTop: '4rem',
 
