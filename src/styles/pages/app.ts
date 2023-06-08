@@ -17,4 +17,16 @@ export const Header = styled('header', {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+
+  img: {
+    maxWidth: '6rem',
+  },
+
+  variants: {
+    spacing: {
+      tablet: {
+        padding: '2rem 1.5rem',
+      }
+    }
+  }
 })

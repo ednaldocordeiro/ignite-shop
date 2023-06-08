@@ -11,7 +11,24 @@ export const CartButton = styled('button', {
 
   cursor: 'pointer',
 
-  position: 'relative'
+  position: 'relative',
+
+  variants: {
+    size: {
+      mobile: {
+        svg: {
+          maxWidth: '1.3rem',
+          maxHeight: '1.3rem',
+        }
+      },
+      tablet: {
+        svg: {
+          maxWidth: '1.5rem',
+          maxHeight: '1.5rem',
+        }
+      }
+    }
+  }
 })
 
 export const Badge = styled('span', {
@@ -47,8 +64,8 @@ export const Close = styled(DialogClose, {
   background:  'transparent',
   color: '$gray300',
 
-  position: 'relative',
-  right: '-100%',
+  position: 'absolute',
+  right: 30,
 })
 
 export const Content = styled(DialogContent, {
@@ -60,11 +77,29 @@ export const Content = styled(DialogContent, {
   backgroundColor: '$gray900',
   padding: '3rem',
 
+  display: 'flex',
+  flexDirection: 'column',
+
   transition: '.5s',
 
   '-webkit-box-shadow': '-10px 0px 41px -14px rgba(0,0,0,0.75)',
   '-moz-box-shadow': '-10px 0px 41px -14px rgba(0,0,0,0.75)',
-  boxShadow: '-10px 0px 41px -14px rgba(0,0,0,0.75)'
+  boxShadow: '-10px 0px 41px -14px rgba(0,0,0,0.75)',
+
+  variants: {
+    full: {
+      tablet: {
+        "@tablet": {
+          width: '100%',
+        }
+      },
+      desktop: {
+        "@desktop": {
+          width: 480,
+        }
+      }
+    }
+  }
 })
 
 export const ProductContainer = styled('div', {

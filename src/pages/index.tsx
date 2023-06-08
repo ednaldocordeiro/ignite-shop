@@ -10,7 +10,8 @@ import Stripe from 'stripe';
 
 import 'keen-slider/keen-slider.min.css';
 import { useShoppingCart } from 'use-shopping-cart';
-import { BagSimple, ShoppingCart } from '@phosphor-icons/react';
+import { BagSimple } from '@phosphor-icons/react';
+
 interface Product {
   id: string;
   name: string;
@@ -32,6 +33,20 @@ export default function Home({ products }: HomeProps) {
       perView: 3,
       spacing: 48,
     },
+    breakpoints: {
+      '(max-width: 1024px)': {
+        slides: {
+          perView: 2,
+          spacing: 48,
+        }
+      },
+      '(max-width: 720px)': {
+        slides: {
+          perView: 1,
+          spacing: 48,
+        }
+      }
+    }
   });
 
   const {addItem} = useShoppingCart()

@@ -30,4 +30,9 @@ export const {
       '2xl': '2rem',
     }
   },
+  media: {
+    mobile: '(max-width: 300px)',
+    tablet: '(min-width: 300px)',
+    desktop: '(min-width: 560px)',
+  }
 });

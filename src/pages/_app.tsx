@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
       shouldPersist
     >
       <Container className={`${roboto.className}`}>
-        <Header>
+        <Header spacing={{"@tablet": 'tablet', "@mobile": 'tablet'}}>
           <Link href='/'>
             <Image src={logo} alt="" />
           </Link>

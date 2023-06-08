@@ -58,14 +58,17 @@ export function CartModal({ className }: CartModal) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <CartButton>
+        <CartButton size={{
+          "@mobile": 'mobile',
+          "@tablet": 'tablet',
+        }}>
           <ShoppingCart size={28} color='white' />
           {cart.length > 0 && <Badge>{cart.length}</Badge>}
         </CartButton>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Overlay />
-        <Content className={className}>
+        <Content className={className} full={{"@tablet": 'tablet', "@desktop": 'desktop'}}>
           <Close>
             <X size={20} />
           </Close>
