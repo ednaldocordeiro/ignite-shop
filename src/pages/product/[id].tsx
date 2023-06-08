@@ -55,11 +55,11 @@ export default function Product({ product }: ProductProps) {
       <Head>
         <title>{product.name} | Ignite Shop</title>
       </Head>
-      <ProductContainer>
+      <ProductContainer grid={{"@mobile": 'unique'}} padding={{"@tablet": 'xl'}}>
         <ImageContainer>
           <Image src={product.imageUrl} width={520} height={480} alt='' />
         </ImageContainer>
-        <ProductDetails>
+        <ProductDetails padding={{"@mobile": 'mobile'}}>
           <h1>{product.name}</h1>
           <span>{product.price}</span>
 
