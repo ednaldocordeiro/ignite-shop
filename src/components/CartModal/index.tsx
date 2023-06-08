@@ -68,7 +68,7 @@ export function CartModal({ className }: CartModal) {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Overlay />
-        <Content className={className} full={{"@tablet": 'tablet', "@desktop": 'desktop'}}>
+        <Content className={className} full={{"@tablet": 'tablet', "@desktop": 'desktop', '@mobile': 'tablet'}}>
           <Close>
             <X size={20} />
           </Close>

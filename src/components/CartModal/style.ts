@@ -89,14 +89,11 @@ export const Content = styled(DialogContent, {
   variants: {
     full: {
       tablet: {
-        "@tablet": {
-          width: '100%',
-        }
+        width: '100%',
+        padding: '1.5rem',
       },
       desktop: {
-        "@desktop": {
-          width: 480,
-        }
+        width: 480,
       }
     }
   }
